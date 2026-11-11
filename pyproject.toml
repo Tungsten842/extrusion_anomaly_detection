@@ -1,10 +1,41 @@
 [project]
 name = "extrusion-anomaly-detection"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
 requires-python = ">=3.14"
-dependencies = [
-    "httpx>=0.28.1",
-    "tqdm>=4.70.1",
+dependencies = ["httpx>=0.28.1", "polars>=2.1.0", "tqdm>=4.66.5"]
+
+[project.optional-dependencies]
+cuda = ["torch", "torchvision", "torchcodec", "triton"]
+rocm-gfx1032 = [
+  "torch[device-gfx1032]<2.14",
+  "torchvision[device-gfx1032],",
+  "torchcodec",
+  "triton",
+  "amd-torch-device-gfx1032",
+  "amd-torchvision-device-gfx1032",
+  "rocm-sdk-device-gfx1032",
+  "rocm-sdk-libraries",
+  "rocm",
+  "rocm-sdk-core",
 ]
+
+[[tool.uv.index]]
+name = "cpu"
+url = "https://download.pytorch.org/whl/cpu"
+
+[[tool.uv.index]]
+name = "rocm"
+url = "https://stable.repo.amd.com/rocm/whl-next/"
+
+[tool.uv.sources]
+torch = { index = "rocm" }
+torchvision = { index = "rocm" }
+torchaudio = { index = "rocm" }
+triton = { index = "rocm" }
+amd-torch-device-gfx1032 = { index = "rocm" }
+amd-torchvision-device-gfx1032 = { index = "rocm" }
+rocm-sdk-device-gfx1032 = { index = "rocm" }
+rocm-sdk-libraries = { index = "rocm" }
+rocm = { index = "rocm" }
+rocm-sdk-core = { index = "rocm" }
+torchcodec = { index = "cpu" }
